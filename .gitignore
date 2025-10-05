@@ -1,0 +1,31 @@
+# Template
+/example/*
+!/example/*.pdf
+!/example/*.tex
+
+# Bytecode compilado
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Archivos de configuración de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Distribución y empaquetado
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Archivos temporales
+*.tmp
+*.swp
+*.bak

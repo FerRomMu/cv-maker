@@ -12,6 +12,8 @@ __pycache__/
 venv/
 env/
 .venv/
+requirements.txt
+requirements-dev.txt
 
 # Archivos de configuración de IDE
 .vscode/

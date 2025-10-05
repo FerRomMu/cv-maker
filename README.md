@@ -80,7 +80,7 @@ pip install -r requirements-dev.txt
 
 ### 7. Notes
 
-- `requirements.in` → production dependencies  
-- `requirements-dev.in` → development-only dependencies (linters, formatters, etc.)  
-- `pip-tools` ensures dependency consistency across environments.  
+- `requirements.in` → production dependencies
+- `requirements-dev.in` → development-only dependencies (linters, formatters, etc.)
+- `pip-tools` ensures dependency consistency across environments.
 - `pre-commit` automatically enforces code quality before each commit.

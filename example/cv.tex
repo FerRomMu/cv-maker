@@ -1,0 +1,122 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm, bottom=2cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+\usepackage{helvet}
+\newcommand{\tagbox}[1]{%
+  \begingroup
+    \setlength{\fboxsep}{0pt}%
+    \raisebox{0.2ex}[1.2em][0.8em]{%
+        \fbox{\hspace{2pt}\raisebox{-0.2em}[1em][0.6em]{\textbf{#1}}\hspace{2pt}}%
+    }%
+  \endgroup
+}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Espaciado entre secciones
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+
+% Formato de títulos
+\titleformat{\section}{\large\bfseries\uppercase}{ }{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{ }{0pt}{}
+
+% Sin sangría
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+% ======= HEADER =======
+\begin{center}
+    {\LARGE \textbf{Lastname, Name}}\\
+    \vspace{4pt}
+    \href{mailto:Mail@mail.com}{Mail@mail.com} \,•\, 
+    \href{https://linkedin.com/in/UserLn}{linkedin.com/in/UserLn} •\,
+    % Solo versión HR
+    {(11) 2233-4455}
+\end{center}
+
+% ======= SUMMARY =======
+\section*{SUMMARY}
+Seccion con el resumen
+
+% ======= EXPERIENCE =======
+\section*{EXPERIENCE}
+
+\textbf{Cargo A}, \textit{Lugar A}\\
+\textit{Mes YYYY - Mes YYYY}
+\begin{itemize}[leftmargin=1.2em]
+    \item Task a.
+    \item Task b.
+    \item Task c.
+\end{itemize}
+\noindent
+\textbf{Skills:} \tagbox{Skill a} \tagbox{Skill b} \tagbox{Skill c}
+
+\textbf{Cargo B}, \textit{Lugar B}\\
+\textit{Mes YYYY - Mes YYYY}
+\begin{itemize}[leftmargin=1.2em]
+    \item Task a.
+    \item Task b.
+    \item Task c.
+\end{itemize}
+\noindent
+\textbf{Skills:} \tagbox{Skill a} \tagbox{Skill b} \tagbox{Skill c}
+
+\textbf{Cargo C}, \textit{Lugar C}\\
+\textit{Mes YYYY - Mes YYYY}
+\begin{itemize}[leftmargin=1.2em]
+    \item Task a.
+    \item Task b.
+    \item Task c.
+\end{itemize}
+\noindent
+\textbf{Skills:} \tagbox{Skill a} \tagbox{Skill b} \tagbox{Skill c}
+
+% ======= EDUCATION =======
+\section*{EDUCATION}
+\textbf{Titulo / Carrera}, \textit{Institución}\\
+\textit{Mes YYYY}
+
+% ======= SKILLS =======
+\section*{SKILLS}
+% Se reemplazó tagbox por texto plano separado por comas para mejor lectura del ATS
+\textbf{Lenguajes de Programación:} Python, JavaScript, Java, Kotlin\\
+\textbf{Frameworks y Librerías:} React, Django, Spring Boot, Node.js\\
+\textbf{Bases de Datos:} PostgreSQL, MongoDB, MySQL, Redis\\
+\textbf{Cloud y DevOps:} AWS, Docker, Kubernetes, CI/CD\\
+\textbf{Herramientas:} Git, Jira, Figma, Postman
+
+% ======= PROJECTS =======
+\section*{PROJECTS}
+\textbf{Project Name}\\
+\textbf{Descripcion:} Una descripcion.\\
+\textbf{Tecnologias:} Skill a, Skill b\\
+\textbf{Repositorio:} \href{https://github.com/proyecto}{github.com/proyecto}
+\vspace{8pt}
+\textbf{Project Name}\\
+\textbf{Descripcion:} Una descripcion.\\
+\textbf{Tecnologias:} Skill a, Skill b\\
+\textbf{Repositorio:} \href{https://github.com/proyecto}{github.com/proyecto}
+
+% ======= AWARDS =======
+\section*{CERTIFICATIONS AND COURSES}
+\begin{itemize}[leftmargin=1.2em]
+    \item Azure Fundamentals AZ-900 \href{https://learn.microsoft.com/es-es/credentials/certifications/azure-fundamentals/?practice-assessment-type=certification}{(About)}
+    \item Scraping tools \href{https://udemy.com/a-course}{(About)}
+\end{itemize}
+
+% ======= ADDITIONAL INFO =======
+\section*{REFERENCES}
+\textbf{Nombre Apellido}, \textit{Cargo, Empresa A}\\
+lorem ipsum \\
+\textbf{Email:} \href{mailto:referencia1@email.com}{referencia1@email.com} \,•\, Tel: (11) 1234-5678
+\vspace{8pt} \\
+\textbf{Nombre Apellido}, \textit{Cargo, Empresa B}\\
+lorem ipsum \\
+\textbf{Email:} \href{mailto:referencia2@email.com}{referencia2@email.com} \,•\, Tel: (11) 8765-4321
+
+\end{document}

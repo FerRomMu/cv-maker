@@ -31,3 +31,5 @@ dist/
 *.tmp
 *.swp
 *.bak
+/outputs/*
+!/outputs/.gitkeep

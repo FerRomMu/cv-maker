@@ -1,0 +1,123 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm, bottom=2cm, left=1.5cm, right=1.5cm]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+\usepackage{helvet}
+
+{% raw -%}
+\newcommand{\tagbox}[1]{%
+  \begingroup
+    \setlength{\fboxsep}{0pt}%
+    \raisebox{0.2ex}[1.2em][0.8em]{%
+        \fbox{\hspace{2pt}\raisebox{-0.2em}[1em][0.6em]{\textbf{#1}}\hspace{2pt}}%
+    }%
+  \endgroup
+}
+{%- endraw %}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+{% raw -%}
+% Espaciado entre secciones
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+
+% Formato de títulos
+\titleformat{\section}{\large\bfseries\uppercase}{ }{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries}{ }{0pt}{}
+
+% Sin sangría
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+{%- endraw %}
+
+\begin{document}
+
+% ======= HEADER =======
+\begin{center}
+    {\LARGE \textbf{ {{- person.lastname | latex_escape -}}, {{ person.name | latex_escape }} }}\\
+    \vspace{4pt}
+    \href{mailto:{{ person.email | latex_escape }}}{{ person.email | latex_escape }} \,•\,
+    \href{https://{{ person.linkedin | latex_escape }}}{{ person.linkedin | latex_escape }} \,•\,
+    {{ person.phone | latex_escape }}
+\end{center}
+
+{% if summary -%}
+\section*{ {{- titles.SUMMARY | latex_escape -}} }
+{{ summary | latex_escape }}
+
+{% endif -%}
+{%- if experiencia -%}
+\section*{ {{- titles.EXPERIENCE | latex_escape -}} }
+
+{% for exp in experiencia -%}
+\textbf{ {{- exp.position | latex_escape -}} }, \textit{ {{- exp.company | latex_escape -}} }\\
+\textit{ {{- exp.period | latex_escape -}} }
+{% raw -%}
+\begin{itemize}[leftmargin=1.2em]
+{%- endraw %}
+{%- for task in exp.tasks %}
+    \item {{ task | latex_escape }}
+{%- endfor %}
+{% raw -%}
+\end{itemize}
+{%- endraw %}
+\noindent
+\textbf{ {{- labels.SKILLS | latex_escape -}}: }
+{%- for sk in exp.skills %} \tagbox{ {{- sk | latex_escape -}} }{% endfor %}
+
+{% endfor -%}
+{%- endif -%}
+{%- if education -%}
+\section*{ {{- titles.EDUCATION | latex_escape -}} }
+{% for edu in education -%}
+\textbf{ {{- edu.degree | latex_escape -}} }, \textit{ {{- edu.institution | latex_escape -}} }\\
+\textit{ {{- edu.period | latex_escape -}} }
+{% if not loop.last %}\vspace{6pt}\\{% endif %}
+{% endfor -%}
+
+{%- endif -%}
+{%- if skills -%}
+\section*{ {{- titles.SKILLS | latex_escape -}} }
+{% for category, items in skills.items() -%}
+\textbf{ {{- category | latex_escape -}}: } {{ items | join(', ') | latex_escape }}\\
+{% endfor -%}
+
+{%- endif -%}
+{%- if projects -%}
+\section*{ {{- titles.PROJECTS | latex_escape -}} }
+{% for p in projects -%}
+\textbf{ {{- p.name | latex_escape -}} }\\
+\textbf{ {{- labels.DESCRIPTION | latex_escape -}}: } {{ p.description | latex_escape }}\\
+\textbf{ {{- labels.TECHNOLOGIES | latex_escape -}}: } {{ p.technologies | join(', ') | latex_escape }}\\
+{% if p.repo -%}\textbf{ {{- labels.REPOSITORY | latex_escape -}}: } \href{ {{- p.repo | latex_escape -}} }{ {{- p.repo | latex_escape -}} }{% endif %}
+{% if not loop.last %}\vspace{8pt}\\{% endif %}
+{% endfor -%}
+
+{%- endif -%}
+{%- if certifications -%}
+\section*{ {{- titles.CERTIFICATIONS | latex_escape -}} }
+{% raw -%}
+\begin{itemize}[leftmargin=1.2em]
+{%- endraw %}
+{%- for c in certifications %}
+    \item {{ c | latex_escape }}
+{%- endfor %}
+{% raw -%}
+\end{itemize}
+{%- endraw %}
+
+{%- endif -%}
+{%- if references -%}
+\section*{ {{- titles.REFERENCES | latex_escape -}} }
+{% for r in references -%}
+\textbf{ {{- r.name | latex_escape -}} }, \textit{ {{- r.position | latex_escape -}}, {{ r.company | latex_escape }} }\\
+{{ r.note | latex_escape }} \\
+\textbf{Email:} \href{mailto:{{ r.email | latex_escape }}}{{ r.email | latex_escape }} \,•\, Tel: {{ r.phone | latex_escape }}
+{% if not loop.last %}\vspace{8pt} \\{% endif %}
+{% endfor -%}
+{%- endif %}
+
+\end{document}

@@ -33,3 +33,4 @@ dist/
 *.bak
 /outputs/*
 !/outputs/.gitkeep
+.app_data/

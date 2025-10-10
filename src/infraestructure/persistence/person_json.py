@@ -2,8 +2,8 @@ import json
 import re
 from dataclasses import asdict, is_dataclass
 
-from src.config.paths import PERSON_STORAGE
-from src.person.models import Person
+from src.domain.entities.person import Person
+from src.infraestructure.config.paths import PERSON_STORAGE
 
 
 def sanitize_filename(name: str) -> str:

@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from types.types import Pair
 from typing import Optional
+
+from src.types import Pair
 
 # ============================================================================
 # PERSONAL INFO MODEL

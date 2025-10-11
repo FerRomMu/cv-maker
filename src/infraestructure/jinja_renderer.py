@@ -8,16 +8,7 @@ from src.infraestructure.latex_filter import latex_escape
 
 class JinjaRenderer:
 
-    def __init__(self, template_dir: Path = TEMPLATES):
-        self.template_dir = template_dir
-        self.env = Environment(
-            loader=FileSystemLoader(template_dir), autoescape=False
-        )
-        self.__register_filters()
-
-    def __register_filters(self):
-        self.env.filters["latex_escape"] = latex_escape
-
+    @staticmethod
     def __validate_template(name: str):
         template_path = TEMPLATES / name
         if template_path.exists():
@@ -30,11 +21,14 @@ class JinjaRenderer:
             f"Template '{name}' no encontrado en {TEMPLATES}"
         )
 
+    @staticmethod
     def render(
-        self,
-        template_name: str,
-        context: dict,
+        template_name: str, context: dict, template_dir: Path = TEMPLATES
     ) -> str:
-        checked_name = self.__validate_template(template_name)
-        template = self.env.get_template(checked_name)
+        env = Environment(
+            loader=FileSystemLoader(template_dir), autoescape=False
+        )
+        env.filters["latex_escape"] = latex_escape
+        checked_name = JinjaRenderer.__validate_template(template_name)
+        template = env.get_template(checked_name)
         return template.render(**context)

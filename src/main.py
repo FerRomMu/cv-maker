@@ -114,7 +114,7 @@ template = ResumeTemplate(
         Section.SUMMARY,
         Section.EXPERIENCES,
         Section.EDUCATION,
-        Section.SKILLS,
+        Section.SKILL_CATEGORIES,
         Section.PROJECTS,
         Section.CERTIFICATIONS,
         Section.REFERENCES,
@@ -122,10 +122,12 @@ template = ResumeTemplate(
     lang=Lang.ES,
 )
 
-resume = Resume(user, template)
+resume = Resume(template=template, person=user)
 
 formatted_data = ResumeFormatter.format(resume)
-rendered_data = JinjaRenderer.render(formatted_data)
+rendered_data = JinjaRenderer.render(
+    resume.template.template_name, formatted_data
+)
 
 with open(OUTPUT / f"{user.full_name()}.tex", "w", encoding="utf-8") as f:
     f.write(rendered_data)

@@ -116,3 +116,6 @@ class Person:
     projects: list[Project] = field(default_factory=list)
     certifications: list[str] = field(default_factory=list)
     references: list[Reference] = field(default_factory=list)
+
+    def full_name(self) -> str:
+        return self.personal_info.lastname + ", " + self.personal_info.name

@@ -1,169 +1,133 @@
-from pathlib import Path
-
-from jinja2 import Environment, FileSystemLoader
-
-# ---------------------------
-# Paths
-# ---------------------------
-
-base_path = Path.cwd()
-output_path = base_path / "outputs"
-template_path = Path.cwd() / "src" / "templates"
-
-
-# ---------------------------
-# Filtro para escapear caracteres especiales de LaTeX
-# ---------------------------
-def latex_escape(s: str) -> str:
-    if s is None:
-        return ""
-    s = str(s)
-    replacements = {
-        "\\": r"\textbackslash{}",
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        "_": r"\_",
-        "{": r"\{",
-        "}": r"\}",
-        "~": r"\textasciitilde{}",
-        "^": r"\textasciicircum{}",
-    }
-    for k, v in replacements.items():
-        s = s.replace(k, v)
-    return s
-
-
-# ---------------------------
-# Cargar plantilla
-# ---------------------------
-env = Environment(loader=FileSystemLoader(template_path), autoescape=False)
-env.filters["latex_escape"] = latex_escape
-template = env.get_template("base.tex.jinja2")  # tu plantilla .jinja
+from src.aplication.formatters import ResumeFormatter
+from src.domain.entities.person import (
+    Education,
+    Experience,
+    Person,
+    PersonalInfo,
+    Project,
+    Reference,
+    SkillCategory,
+)
+from src.domain.entities.resume import Resume, ResumeTemplate
+from src.domain.enums import Lang, Section
+from src.infraestructure.config.paths import OUTPUT
+from src.infraestructure.jinja_renderer import JinjaRenderer
 
 # ---------------------------
 # Datos de ejemplo para el CV
 # ---------------------------
-data = {
-    "person": {
-        "name": "Lorem",
-        "lastname": "Ipsum Dolor",
-        "email": "lorem@ipsum.com",
-        "linkedin": "linkedin.com/in/loremipsum",
-        "phone": "(11) 1234-5678",
-    },
-    "titles": {
-        "SUMMARY": "RESUMEN",
-        "EXPERIENCE": "EXPERIENCIA",
-        "EDUCATION": "EDUCACIÓN",
-        "SKILLS": "HABILIDADES",
-        "PROJECTS": "PROYECTOS",
-        "CERTIFICATIONS": "CERTIFICACIONES",
-        "REFERENCES": "REFERENCIAS",
-    },
-    "labels": {
-        "SKILLS": "Habilidades",
-        "DESCRIPTION": "Descripción",
-        "TECHNOLOGIES": "Tecnologías",
-        "REPOSITORY": "Repositorio",
-    },
-    "summary": (
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        " Sed do eiusmod tempor incididunt ut labore"
-        " et dolore magna aliqua."
+user: Person = Person(
+    personal_info=PersonalInfo(
+        name="Fernando",
+        lastname="Romero Muñoz",
+        email="fernando@example.com",
+        phone="+54 9 11 5555-5555",
+        links=[
+            ("LinkedIn", "https://linkedin.com/in/fernandomunoz"),
+            ("GitHub", "https://github.com/fernandomunoz"),
+        ],
     ),
-    "experiencia": [
-        {
-            "position": "Senior Backend Engineer",
-            "company": "Fictional Corp S.A.",
-            "period": "Enero 2023 - Presente",
-            "tasks": [
-                "Desarrollo de microservicios con tecnologías de vanguardia.",
-                "Implementación de patrones de diseño escalables y robustos.",
-                (
-                    "Optimización de rendimiento"
-                    " y gestión de bases de datos NoSQL."
-                ),
+    summary=(
+        "Software developer specialized in Python and Kotlin, with experience "
+        "in backend architectures, AI integration, and scalable modular design."
+    ),
+    experiences=[
+        Experience(
+            position="Backend Developer",
+            company="TechCorp",
+            period="2021 - Present",
+            tasks=[
+                "Develop RESTful APIs using FastAPI",
+                "Integrate LLM-based services for document parsing",
+                "Manage CI/CD pipelines using GitHub Actions",
             ],
-            "skills": ["Python", "Django", "PostgreSQL"],
-        },
-        {
-            "position": "Frontend Developer",
-            "company": "Dummy Solutions",
-            "period": "Marzo 2021 - Diciembre 2022",
-            "tasks": [
-                (
-                    "Creación de interfaces de usuario"
-                    " interactivas con librería X."
-                ),
-                "Consumo de APIs RESTful y gestión de estado global.",
-                "Colaboración en metodologías ágiles y CI/CD.",
+            skills=["Python", "FastAPI", "Docker", "PostgreSQL"],
+        ),
+        Experience(
+            position="Software Engineer",
+            company="DataWorks",
+            period="2019 - 2021",
+            tasks=[
+                "Built internal tools for data processing with pandas",
+                "Optimized database queries and ETL pipelines",
             ],
-            "skills": ["React", "TypeScript", "Redux", "Jest"],
-        },
+            skills=["pandas", "SQLAlchemy", "ETL"],
+        ),
     ],
-    "education": [
-        {
-            "degree": "Licenciatura en Tecnología",
-            "institution": "Instituto Central",
-            "period": "2018 - 2022",
-        }
+    education=[
+        Education(
+            degree="Bachelor in Computer Science",
+            institution="Universidad de Buenos Aires",
+            period=(2014, 2019),
+            description="Focus on software architecture and distributed systems.",
+        ),
     ],
-    "skills": {
-        "Lenguajes de Programación": [
-            "Ficticio Uno",
-            "Ficticio Dos",
-            "Ficticio Tres",
-            "Ficticio Cuatro",
-        ],
-        "Frameworks y Librerías": [
-            "Framework X",
-            "Librería Y",
-            "Herramienta Z",
-            "Tecnología W",
-        ],
-        "Bases de Datos": ["BD Tipo A", "BD Tipo B", "BD Tipo C"],
-        "Cloud y DevOps": [
-            "Cloud Ficticia",
-            "Contenedores",
-            "Orquestador",
-            "Flujo CI/CD",
-        ],
-        "Herramientas": ["Herramienta 1", "Herramienta 2", "Herramienta 3"],
-    },
-    "projects": [
-        {
-            "name": "Proyecto Ficticio Alpha",
-            "description": (
-                "Aplicación de prueba para demostración de arquitectura"
-                " hexagonal."
-            ),
-            "technologies": ["Tecnología A", "Tecnología B", "Tecnología C"],
-            "repo": "https://github.com/loremipsum/proyecto-ficticio",
-        }
+    skill_categories=[
+        SkillCategory(
+            category="Programming Languages",
+            items=["Python", "Kotlin", "JavaScript"],
+        ),
+        SkillCategory(
+            category="Frameworks", items=["FastAPI", "Flask", "React"]
+        ),
+        SkillCategory(category="Tools", items=["Docker", "Git", "CI/CD"]),
     ],
-    "certifications": [
-        "Certificación Ficticia Nivel Junior",
-        "Curso Avanzado de Desarrollo XYZ",
+    projects=[
+        Project(
+            name="gitllm",
+            description="Open-source tool for generating commit messages using LLMs.",
+            technologies=["Python", "Git", "LLM APIs"],
+            repo="https://github.com/fernandomunoz/gitllm",
+        ),
+        Project(
+            name="KanbanApp",
+            description="Lightweight Kanban board built with Jetpack Compose.",
+            technologies=["Kotlin", "Jetpack Compose"],
+        ),
     ],
-    "references": [
-        {
-            "name": "Jane Doe",
-            "position": "Manager",
-            "company": "Fictional Corp S.A.",
-            "note": "Supervisor de proyectos de desarrollo fullstack.",
-            "email": "jane.doe@fictional.com",
-            "phone": "(11) 9876-5432",
-        }
+    certifications=[
+        "Azure AI Fundamentals",
+        "Google Cloud Associate Engineer",
     ],
-}
+    references=[
+        Reference(
+            name="Laura Gómez",
+            position="CTO",
+            company="TechCorp",
+            email="laura.gomez@techcorp.com",
+            phone="+54 9 11 4444-4444",
+            note="Direct manager during backend development projects.",
+        ),
+        Reference(
+            name="Martín Pérez",
+            position="Team Lead",
+            company="DataWorks",
+            email="martin.perez@dataworks.com",
+        ),
+    ],
+)
 
-# ---------------------------
-# Renderizar plantilla y guardar .tex
-# ---------------------------
-rendered = template.render(**data)
-with open(output_path / "output.tex", "w", encoding="utf-8") as f:
-    f.write(rendered)
+template = ResumeTemplate(
+    template_name="base",
+    sections=[
+        Section.PERSONAL_INFO,
+        Section.SUMMARY,
+        Section.EXPERIENCES,
+        Section.EDUCATION,
+        Section.SKILLS,
+        Section.PROJECTS,
+        Section.CERTIFICATIONS,
+        Section.REFERENCES,
+    ],
+    lang=Lang.ES,
+)
+
+resume = Resume(user, template)
+
+formatted_data = ResumeFormatter.format(resume)
+rendered_data = JinjaRenderer.render(formatted_data)
+
+with open(OUTPUT / f"{user.full_name()}.tex", "w", encoding="utf-8") as f:
+    f.write(rendered_data)
 
 print("Archivo output.tex generado correctamente.")

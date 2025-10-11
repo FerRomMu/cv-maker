@@ -16,7 +16,7 @@ from src.domain.enums import Lang, Section
 class PersonFormatter:
 
     @staticmethod
-    def __set_formatted_data(data: dict, section: Section, value: Any):
+    def __set_formatted_data(data: dict, section: str, value: Any):
         if value is not None:
             data[section] = value
 
@@ -144,38 +144,42 @@ class PersonFormatter:
 
         mappings = [
             (
-                Section.PERSONAL_INFO,
+                Section.PERSONAL_INFO.value,
                 PersonFormatter.__format_info,
                 person.personal_info,
             ),
-            (Section.SUMMARY, lambda x: x if x else None, person.summary),
             (
-                Section.EXPERIENCES,
+                Section.SUMMARY.value,
+                lambda x: x if x else None,
+                person.summary,
+            ),
+            (
+                Section.EXPERIENCES.value,
                 PersonFormatter.__format_experiencies,
                 person.experiences,
             ),
             (
-                Section.EDUCATION,
+                Section.EDUCATION.value,
                 PersonFormatter.__format_education,
                 person.education,
             ),
             (
-                Section.SKILL_CATEGORIES,
+                Section.SKILL_CATEGORIES.value,
                 PersonFormatter.__format_skills,
                 person.skill_categories,
             ),
             (
-                Section.PROJECTS,
+                Section.PROJECTS.value,
                 PersonFormatter.__format_projects,
                 person.projects,
             ),
             (
-                Section.CERTIFICATIONS,
+                Section.CERTIFICATIONS.value,
                 PersonFormatter.__format_certifications,
                 person.certifications,
             ),
             (
-                Section.REFERENCES,
+                Section.REFERENCES.value,
                 PersonFormatter.__format_references,
                 person.references,
             ),
@@ -193,23 +197,27 @@ class ResumeFormatter:
 
     @staticmethod
     def format(resume: Resume):
-        formatted_data: dict[Section, Any] = {}
+        formatted_data: dict[str, Any] = {}
 
-        formatted_person: dict[Section, Any] = PersonFormatter.format(
+        formatted_person: dict[str, Any] = PersonFormatter.format(
             resume.person
         )
+        print(formatted_person)
+
         resume_sections: list[Section] = [
             section
             for section in resume.template.sections
-            if section in formatted_person
+            if section.value in formatted_person
         ]
-
-        titles: dict[Section, str] = {}
+        print(resume_sections)
+        print(list(formatted_person.keys()))
+        titles: dict[str, str] = {}
         lang: Lang = resume.template.lang
         for section in resume_sections:
-            titles[section] = section.to_str(lang)
+            titles[section.value] = section.to_str(lang)
 
         formatted_data["titles"] = titles
+
         formatted_data["person"] = {
             key: value
             for key, value in formatted_person.items()

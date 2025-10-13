@@ -2,7 +2,15 @@ import json
 import re
 from dataclasses import asdict, is_dataclass
 
-from src.domain.entities.person import Person
+from src.domain.entities.person import (
+    Education,
+    Experience,
+    Person,
+    PersonalInfo,
+    Project,
+    Reference,
+    SkillCategory,
+)
 from src.infraestructure.config.paths import PERSON_STORAGE
 
 
@@ -38,4 +46,16 @@ class PersonJsonStorage:
 
         with open(file_name, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return Person(**data)
+
+        return Person(
+            personal_info=PersonalInfo(**data["personal_info"]),
+            summary=data.get("summary", ""),
+            experiences=[Experience(**e) for e in data.get("experiences", [])],
+            education=[Education(**e) for e in data.get("education", [])],
+            skill_categories=[
+                SkillCategory(**c) for c in data.get("skill_categories", [])
+            ],
+            projects=[Project(**p) for p in data.get("projects", [])],
+            certifications=data.get("certifications", []),
+            references=[Reference(**r) for r in data.get("references", [])],
+        )

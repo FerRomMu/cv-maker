@@ -9,8 +9,8 @@ from src.infraestructure.persistence.json import PersonJsonStorage
 # ---------------------------
 # Datos de ejemplo para el CV
 # ---------------------------
-user: Person = PersonJsonStorage.load_person("fernando_mario")
-
+user: Person = PersonJsonStorage.load_person("Fernando")
+print(user)
 template = ResumeTemplate(
     template_name="base",
     sections=[
@@ -19,6 +19,9 @@ template = ResumeTemplate(
         Section.EXPERIENCES,
         Section.EDUCATION,
         Section.SKILL_CATEGORIES,
+        Section.CERTIFICATIONS,
+        Section.PROJECTS,
+        Section.REFERENCES,
     ],
     lang=Lang.ES,
 )

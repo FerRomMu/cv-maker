@@ -15,6 +15,9 @@ env/
 requirements.txt
 requirements-dev.txt
 
+# Información local
+.env
+
 # Archivos de configuración de IDE
 .vscode/
 .idea/
